@@ -1,0 +1,17 @@
+var regexConfig = {
+  "full_name_bn": RegExp(r'[ঀ-৿]+'),
+  "father_nid": RegExp(r'^(\d{10}|\d{17})$'),
+  "mother_nid": RegExp(r'^(\d{10}|\d{17})$'),
+  "birth_registration_no": RegExp(r'^(\d{17})$'),
+  "student_email": RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$'),
+  "student_contact": RegExp(r'^01[1-9][0-9]{8}$'),
+  "father_contact_no": RegExp(r'^01[1-9][0-9]{8}$'),
+  "local_guardian_contact_no": RegExp(r'^01[1-9][0-9]{8}$'),
+  "mother_contact_no": RegExp(r'^01[1-9][0-9]{8}$'),
+  "father_name_en": RegExp(r'^[A-Z^.\s]+$'),
+  "mother_name_en": RegExp(r'^[A-Z^.\s]+$'),
+  "father_yearly_income": RegExp(r'^(?:[0-4]?\d{0,9}|5000000000)$'),
+  "roll_number[0]": RegExp(r'^(\d{6})$'),
+  "registration_number[0]": RegExp(r'^(\d{10})$'),
+  "registration_number[1]": RegExp(r'^(\d{10})$'),
+};
