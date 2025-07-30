@@ -24,7 +24,7 @@ BorderRadius mainBorderRadius(double value) => BorderRadius.circular(value.r);
 
 final imageMaxWidth = Platform.isIOS ? 1024.0 : null;
 final imageMaxHeight = Platform.isIOS ? 1920.0 : null;
-
+final mapApiKey="AIzaSyBINrm3QJioTcTFVZLU6y53v_7zL0_xisU";
 const String free = "free";
 const String paid = "paid";
 const String regText = "reg";
@@ -86,14 +86,4 @@ EdgeInsetsGeometry mainPadding(double leftRight, double topBottom,
   );
 }
 
-String formatDateForField(DateTime selectedDate, {String? dateFormat}) {
-  final formatedDate =
-  DateFormat(dateFormat ?? 'dd MMM yyyy, EEEE').format(selectedDate);
-  return formatedDate;
-}
 
-DateTime parseDateForField(String selectedDate, {String? dateFormat}) {
-  final parsedDate =
-  DateFormat(dateFormat ?? 'dd MMM yyyy, EEEE').parse(selectedDate);
-  return parsedDate;
-}
