@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 import '../../network/api_client.dart';
@@ -24,7 +23,6 @@ BorderRadius mainBorderRadius(double value) => BorderRadius.circular(value.r);
 
 final imageMaxWidth = Platform.isIOS ? 1024.0 : null;
 final imageMaxHeight = Platform.isIOS ? 1920.0 : null;
-final mapApiKey="AIzaSyBINrm3QJioTcTFVZLU6y53v_7zL0_xisU";
 const String free = "free";
 const String paid = "paid";
 const String regText = "reg";

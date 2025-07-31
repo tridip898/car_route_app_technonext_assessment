@@ -1,4 +1,4 @@
-package com.technonext.carroute.car_route_app_assessment_technonext
+package com.technonect.carroute
 
 import io.flutter.embedding.android.FlutterActivity
 

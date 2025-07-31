@@ -3,6 +3,9 @@
         android:label="car_route_app_assessment_technonext"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -20,8 +23,7 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
-            <meta-data android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyBINrm3QJioTcTFVZLU6y53v_7zL0_xisU"/>
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
