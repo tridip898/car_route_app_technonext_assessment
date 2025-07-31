@@ -23,9 +23,9 @@ class MapScreenView extends GetView<MapScreenController> {
                   onMapCreated: (mapController) {
                     controller.googleMapController = mapController;
                   },
-                  // markers: controller.markers,
-                  // polylines: controller.polylines,
-                  // onTap: (position) => controller.handleMapTap(position),
+                  markers: controller.markers,
+                  polylines: controller.polylines,
+                  onTap: (position) => controller.handleMapTap(position),
                 ),
               ),
             ),

@@ -60,7 +60,6 @@ class MapScreenController extends GetxController {
     );
 
     if (markerId == 'origin') {
-      // Clear all markers when a new origin is set
       markers.clear();
     }
     markers.add(marker);
