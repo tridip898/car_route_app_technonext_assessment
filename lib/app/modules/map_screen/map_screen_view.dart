@@ -10,10 +10,11 @@ class MapScreenView extends GetView<MapScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Map'), centerTitle: true),
+      appBar: AppBar(title: const Text('Car Route'), centerTitle: true),
       body: SafeArea(
         child: Column(
           children: [
+            // Text("Map"),
             Obx(
               () => Expanded(
                 child: GoogleMap(

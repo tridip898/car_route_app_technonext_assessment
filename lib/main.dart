@@ -21,7 +21,7 @@ void main() async {
       useInheritedMediaQuery: true,
       builder: (BuildContext context, child) {
         return GetMaterialApp(
-          title: "My Suzuki",
+          title: "Car Route",
           initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
           debugShowCheckedModeBanner: false,

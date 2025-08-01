@@ -14,9 +14,9 @@ class MapScreenController extends GetxController {
   final polylines = <Polyline>{}.obs;
 
   GoogleMapController? googleMapController;
-  final PolylinePoints polylinePoints = PolylinePoints(
-    apiKey: dotenv.env['GOOGLE_MAPS_API_KEY'] ?? "",
-  );
+  // final PolylinePoints polylinePoints = PolylinePoints(
+  //   apiKey: dotenv.env['GOOGLE_MAPS_API_KEY'] ?? "",
+  // );
   final initialCameraPosition = CameraPosition(
     target: LatLng(23.8041, 90.4152),
     zoom: 12,
@@ -43,7 +43,7 @@ class MapScreenController extends GetxController {
       // Set destination point
       destination.value = position;
       addMarker(position, "destination");
-      drawRoute();
+      // drawRoute();
     }
   }
 
@@ -65,45 +65,45 @@ class MapScreenController extends GetxController {
     markers.add(marker);
   }
 
-  Future<void> drawRoute() async {
-    if (origin.value == null || destination.value == null) return;
-
-    RoutesApiResponse result = await polylinePoints
-        .getRouteBetweenCoordinatesV2(
-          request: RoutesApiRequest(
-            origin: PointLatLng(
-              origin.value!.latitude,
-              origin.value!.longitude,
-            ),
-            destination: PointLatLng(
-              destination.value!.latitude,
-              destination.value!.longitude,
-            ),
-            travelMode: TravelMode.driving,
-            routingPreference: RoutingPreference.trafficAware,
-          ), // Efficient car route [cite: 9]
-        );
-
-    if (result.routes.isNotEmpty) {
-      Route route = result.routes.first;
-
-      // Access route information
-      logger.i('Duration: ${route.durationMinutes} minutes');
-      logger.i('Distance: ${route.distanceKm} km');
-
-      final polyline = Polyline(
-        polylineId: const PolylineId('route'),
-        color: AppColors.primaryColor,
-        width: 6,
-        points:
-            (route.polylinePoints
-                ?.map((p) => LatLng(p.latitude, p.longitude))
-                .toList() ??
-            []),
-      );
-      polylines.add(polyline);
-    }
-  }
+  // Future<void> drawRoute() async {
+  //   if (origin.value == null || destination.value == null) return;
+  //
+  //   RoutesApiResponse result = await polylinePoints
+  //       .getRouteBetweenCoordinatesV2(
+  //         request: RoutesApiRequest(
+  //           origin: PointLatLng(
+  //             origin.value!.latitude,
+  //             origin.value!.longitude,
+  //           ),
+  //           destination: PointLatLng(
+  //             destination.value!.latitude,
+  //             destination.value!.longitude,
+  //           ),
+  //           travelMode: TravelMode.driving,
+  //           routingPreference: RoutingPreference.trafficAware,
+  //         ), // Efficient car route [cite: 9]
+  //       );
+  //
+  //   if (result.routes.isNotEmpty) {
+  //     Route route = result.routes.first;
+  //
+  //     // Access route information
+  //     logger.i('Duration: ${route.durationMinutes} minutes');
+  //     logger.i('Distance: ${route.distanceKm} km');
+  //
+  //     final polyline = Polyline(
+  //       polylineId: const PolylineId('route'),
+  //       color: AppColors.primaryColor,
+  //       width: 6,
+  //       points:
+  //           (route.polylinePoints
+  //               ?.map((p) => LatLng(p.latitude, p.longitude))
+  //               .toList() ??
+  //           []),
+  //     );
+  //     polylines.add(polyline);
+  //   }
+  // }
 
   void clearMap() {
     markers.clear();
