@@ -26,10 +26,10 @@ class AppWidgets {
     );
   }
 
-  divider({
+  Widget divider({
     double height = 10,
     Color color = AppColors.dividerColor,
-    double thickness = 0.5,
+    double thickness = 1,
   }) {
     return Divider(
       color: color,
@@ -139,46 +139,6 @@ class AppWidgets {
   }
 
 
-
-  Widget noDataFound({
-    String? title,
-    String image = notFound,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(
-          image,
-          width: .5.sw,
-        ),
-        if ((title ?? "") != "") gapH16,
-        Text(
-          title ?? "",
-          style: text16Style(
-            isWeight700: true,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-  }
-
-// Widget noData({msg = "No data found", color = Colors.redAccent}) {
-//   return Center(
-//     child: Padding(
-//       padding: EdgeInsets.symmetric(
-//         vertical: mainPaddingH,
-//         horizontal: mainPaddingW,
-//       ),
-//       child: Text(
-//         msg,
-//         style: textAppBarStyle(color: color, fontSize: 25),
-//         textAlign: TextAlign.center,
-//       ),
-//     ),
-//   );
-// }
 
   Future<DateTime?> datePickerMain(
       {bool canPickFutureDate = true,
