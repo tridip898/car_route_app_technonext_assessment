@@ -1,35 +1,37 @@
-import 'package:car_route_app_assessment_technonext/app/core/constants/app_colors.dart';
-import 'package:car_route_app_assessment_technonext/app/core/constants/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart'
     as poly_line;
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_constraints.dart';
+import '../../core/utils/helper/location_service.dart';
+import '../../core/widget/distance_duration_bottom_sheet.dart';
 
 class MapScreenController extends GetxController {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   PersistentBottomSheetController? sheetController;
+  GoogleMapController? googleMapController;
   final Rxn<LatLng> origin = Rxn<LatLng>();
   final Rxn<LatLng> destination = Rxn<LatLng>();
-
   final markers = <Marker>{}.obs;
   final polylines = <Polyline>{}.obs;
-
-  GoogleMapController? googleMapController;
   final poly_line.PolylinePoints polylinePoints = poly_line.PolylinePoints(
     apiKey: dotenv.env['GOOGLE_MAPS_API_KEY'] ?? "",
   );
   final initialCameraPosition = CameraPosition(
     target: LatLng(23.8041, 90.4152),
     zoom: 12,
-  );
-  final googleMapKey = dotenv.env['GOOGLE_MAPS_API_KEY'];
+  ).obs;
+
+  // final googleMapKey = dotenv.env['GOOGLE_MAPS_API_KEY'];
   final originAddress = "".obs, destinationAddress = "".obs;
+  final routeDistance = 0.0.obs;
+  final routeDuration = 0.0.obs;
+  final showBottomSheet = false.obs;
 
   @override
   void onInit() {
@@ -39,24 +41,72 @@ class MapScreenController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+    logger.i("onReady");
+    requestPermissionAndMoveToCurrentLocation();
+    listenBottomSheet();
+  }
+
+  Future<void> requestPermissionAndMoveToCurrentLocation() async {
+    try {
+      final position = await LocationService().getValidLocation();
+      if (position != null) {
+        initialCameraPosition.value = CameraPosition(
+          target: LatLng(position.latitude ?? 0, position.longitude ?? 0),
+          zoom: 14,
+        );
+        googleMapController?.animateCamera(
+          CameraUpdate.newCameraPosition(initialCameraPosition.value),
+        );
+      }
+    } catch (e) {
+      logger.e("Error fetching location: $e");
+    }
+  }
+
+  void listenBottomSheet() {
+    ever(showBottomSheet, (show) {
+      if (show == true) {
+        sheetController = scaffoldKey.currentState?.showBottomSheet(
+          (context) => DistanceDurationBottomSheet(
+            distance: routeDistance.value,
+            duration: routeDuration.value,
+          ),
+          backgroundColor: AppColors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+        );
+
+        sheetController?.closed.whenComplete(() {
+          showBottomSheet.value = false;
+        });
+      }
+    });
+  }
+
   void handleMapTap(LatLng position) async {
     if (origin.value == null ||
         (origin.value != null && destination.value != null)) {
-      // Set origin point
       origin.value = position;
-      destination.value = null; // Reset destination
+      destination.value = null;
       polylines.clear();
       sheetController?.close();
-      originAddress.value = await getAddressFromLatLng(
-          origin.value?.latitude ?? 0.0, origin.value?.longitude ?? 0.0);
       addMarker(position, "origin");
+
+      originAddress.value = await getAddressFromLatLng(
+        origin.value?.latitude ?? 0.0,
+        origin.value?.longitude ?? 0.0,
+      );
     } else {
-      // Set destination point
       destination.value = position;
-      destinationAddress.value = await getAddressFromLatLng(
-          destination.value?.latitude ?? 0.0,
-          destination.value?.longitude ?? 0.0);
       addMarker(position, "destination");
+      destinationAddress.value = await getAddressFromLatLng(
+        destination.value?.latitude ?? 0.0,
+        destination.value?.longitude ?? 0.0,
+      );
       drawRoute();
     }
   }
@@ -107,26 +157,21 @@ class MapScreenController extends GetxController {
 
       final polyline = Polyline(
         polylineId: const PolylineId('route'),
-        color: AppColors.primaryColor,
-        width: 6,
+        color: AppColors.primaryColor.withValues(alpha: .8),
+        width: 4,
         points: (route.polylinePoints
                 ?.map((p) => LatLng(p.latitude, p.longitude))
                 .toList() ??
             []),
       );
       polylines.add(polyline);
-      showDistanceAndDurationDialog(
-        distance: route.distanceKm,
-        duration: route.durationMinutes,
-      );
-    }
-  }
+      polylines.refresh();
 
-  void clearMap() {
-    markers.clear();
-    polylines.clear();
-    origin.value = null;
-    destination.value = null;
+      routeDistance.value = route.distanceKm ?? 0.0;
+      routeDuration.value = route.durationMinutes ?? 0.0;
+      showBottomSheet.value = true;
+      logger.i("showBottomSheet ${showBottomSheet.value}");
+    }
   }
 
   Future<String> getAddressFromLatLng(double lat, double lng) async {
@@ -136,7 +181,7 @@ class MapScreenController extends GetxController {
       if (placemarks.isNotEmpty) {
         final Placemark place = placemarks[0];
         final address =
-            "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+            "${(place.subLocality ?? "").isNotEmpty ? "${place.subLocality}, " : ""}${(place.locality ?? "").isNotEmpty ? "${place.locality}, " : ""}${place.country}";
         return address;
       } else {
         return "";
@@ -146,98 +191,11 @@ class MapScreenController extends GetxController {
     }
   }
 
-  void showDistanceAndDurationDialog({double? distance, double? duration}) {
-    final maxHeight = MediaQuery.of(Get.context!).size.height -
-        kToolbarHeight -
-        MediaQuery.of(Get.context!).padding.top -
-        64.h;
-    sheetController = scaffoldKey.currentState?.showBottomSheet(
-      constraints: BoxConstraints(maxHeight: maxHeight),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      (context) {
-        return IntrinsicHeight(
-          child: Container(
-            width: Get.width,
-            padding: mainPadding(20, 10),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-            ),
-            child: SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      height: 4.h,
-                      width: 36.w,
-                      decoration: BoxDecoration(
-                        color: AppColors.grey.withValues(alpha: .5),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                  gapH20,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          "Car Route",
-                          style: text18Style(isWeight400: true),
-                        ),
-                      ),
-                      gapW12,
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Material(
-                          shape: CircleBorder(),
-                          clipBehavior: Clip.hardEdge,
-                          color: AppColors.grey.withValues(alpha: .2),
-                          child: InkWell(
-                            onTap: Get.back,
-                            child: Padding(
-                              padding: mainPadding(4, 4),
-                              child: Icon(Icons.close, size: 20.w),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  appWidget.divider(height: 20),
-                  RichText(
-                    text: TextSpan(
-                      text: "${duration?.toStringAsFixed(0)} min",
-                      style: text18Style(
-                        color: Colors.red,
-                        isWeight400: true,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: " (${distance?.toStringAsFixed(1)} km)",
-                          style: text18Style(
-                            isWeight400: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  gapH8,
-                  Text(
-                    "Fastest Route now due to traffic conditions",
-                    style: text12Style(),
-                  ),
-                  gapH20,
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  void clearMap() {
+    markers.clear();
+    polylines.clear();
+    sheetController?.close();
+    origin.value = null;
+    destination.value = null;
   }
 }
