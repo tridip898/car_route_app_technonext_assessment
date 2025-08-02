@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../constants/app_assets.dart';
 import '../constants/app_colors.dart';
-import '../constants/app_constraints.dart';
-import '../constants/app_text_style.dart';
 import '../utils/helper/app_helper.dart';
-import 'dynamic_rich_text.dart';
 
 class AppWidgets {
   final bool needScreenUtil = true;
@@ -43,7 +37,6 @@ class AppWidgets {
     String body,
     retryClick, {
     buttonText = "Try Again",
-    isErrorMessageBangla = false,
     barrierDismissible = true,
   }) {
     if (Get.context == null) {
@@ -63,21 +56,15 @@ class AppWidgets {
         ),
         actions: <Widget>[
           TextButton(
-              child: Text(
-                buttonText == "Try Again"
-                    ? (isErrorMessageBangla ? "আবার চেষ্টা করুন" : buttonText)
-                    : buttonText,
-              ),
+              child: Text(buttonText),
               onPressed: () {
                 Navigator.pop(context);
                 if (buttonText != "Ok") {
-                  if (buttonText != "ঠিক আছে") {
-                    try {
-                      retryClick();
-                      AppHelper().showLoader();
-                    } catch (e) {
-                      AppHelper().hideLoader();
-                    }
+                  try {
+                    retryClick();
+                    AppHelper().showLoader();
+                  } catch (e) {
+                    AppHelper().hideLoader();
                   }
                 }
               })
@@ -86,29 +73,22 @@ class AppWidgets {
     );
   }
 
-  showSimpleToast(
+  void showSimpleToast(
     String? message, {
     String? title,
     bool isSuccess = false,
     bool doNeedScreenUtil = false,
     bool isInfo = false,
-    bool isErrorMessageBangla = false,
     bool isError = true,
     int duration = 1000,
   }) {
     Get.snackbar(
       title ??
           (isSuccess
-              ? isErrorMessageBangla
-                  ? "সফল হয়েছে"
-                  : "Success"
+              ? "Success"
               : isInfo
-                  ? isErrorMessageBangla
-                      ? "তথ্য"
-                      : "Info"
-                  : isErrorMessageBangla
-                      ? "ত্রুটি"
-                      : "Error"),
+                  ? "Info"
+                  : "Error"),
       message ?? "",
       icon: Icon(
         (isSuccess
@@ -137,62 +117,4 @@ class AppWidgets {
       duration: Duration(milliseconds: duration),
     );
   }
-
-
-
-  Future<DateTime?> datePickerMain(
-      {bool canPickFutureDate = true,
-      bool canPickFirstDate = false,
-      required DateTime initialDate,
-      DateTime? firstDate}) async {
-    DateTime? pickedDate = await showDatePicker(
-      context: Get.context!,
-      initialDate: canPickFirstDate
-          ? (initialDate.isBefore(firstDate ?? DateTime.now())
-              ? firstDate
-              : initialDate)
-          : initialDate,
-      firstDate: canPickFirstDate
-          ? (firstDate ?? DateTime.now())
-          : DateTime.now().subtract(const Duration(days: 365)),
-      lastDate: canPickFutureDate
-          ? DateTime.now().add(const Duration(days: 365))
-          : DateTime.now(),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Colors.purple, // header background color
-              onPrimary: Colors.white, // header text color
-              onSurface: Colors.black, // body text color
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.red, // button text color
-              ),
-            ),
-            dialogTheme: DialogThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(20.0), // Set the border radius here
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedDate != null) {
-      initialDate = pickedDate;
-      return initialDate;
-      /*  logger.i("Before format $pickedDate");
-      String formattedDate = DateFormat('dd MMM yyyy').format(pickedDate);
-      logger.i("After format $formattedDate");
-      return formattedDate;*/
-    }
-    return null;
-  }
-
-
 }

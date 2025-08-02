@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
@@ -15,27 +13,11 @@ var appHelper = AppHelper();
 var apiClient = ApiClient();
 
 const defaultBorderRadius = 8.0;
-double widgetToTitlePadding = 16;
 const transitionDuration = 500;
-final isComingSoonNeeded = false;
-
-BorderRadius mainBorderRadius(double value) => BorderRadius.circular(value.r);
-
-final imageMaxWidth = Platform.isIOS ? 1024.0 : null;
-final imageMaxHeight = Platform.isIOS ? 1920.0 : null;
-const String free = "free";
-const String paid = "paid";
-const String regText = "reg";
-const String emailVerification = "email_Verification";
-const String forgotText = "forgot";
-const String updateProfile = "update_profile";
-const String personalInfo = "personal_info";
-const String drivingLicense = "driving_license";
-const String brtaReg = "brta_reg";
-const String insurancePaper = "insurance_paper";
-const String otherDoc = "other_doc";
 
 const Transition transition = Transition.fadeIn;
+
+//horizontal gap
 final Widget gapW3 = appWidget.gapW(3);
 final Widget gapW6 = appWidget.gapW(6);
 final Widget gapW8 = appWidget.gapW(8);
@@ -47,6 +29,7 @@ final Widget gapW24 = appWidget.gapW(24);
 final Widget gapW30 = appWidget.gapW(30);
 final Widget gapW34 = appWidget.gapW(34);
 
+//vertical gap
 final Widget gapH3 = appWidget.gapH(3);
 final Widget gapH6 = appWidget.gapH(6);
 final Widget gapH8 = appWidget.gapH(8);
@@ -82,6 +65,9 @@ EdgeInsetsGeometry mainPadding(double leftRight, double topBottom,
         ? (bottomPadding ?? topBottom).h
         : (bottomPadding ?? topBottom),
   );
+
 }
 
-
+//app hardcore text
+const String originText = "origin";
+const String destinationText = "destination";

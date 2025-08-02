@@ -27,14 +27,12 @@ class ApiClient {
     bool isHeaderRequired = true,
     bool needLoader = true,
     bool? isApplicationJson,
-    bool isNeedToCallRefreshToken = true,
   }) async {
     logger.w('URL:  $url\nQueryParameters: $mQueryParameters');
     appHelper.showLoader(needToShow: needLoader);
     appHelper.hideKeyboard();
     try {
       if (isHeaderRequired) {
-        await appHelper.getToken().then((value) => {token = value ?? ""});
         dio?.options.headers["Authorization"] = "Bearer $token";
         if (isApplicationJson ?? true) {
           dio?.options.headers["Accept"] = "application/json";
@@ -56,7 +54,6 @@ class ApiClient {
         e,
         retry,
         isHeaderRequired,
-        isNeedToCallRefreshToken: isNeedToCallRefreshToken,
       );
     }
   }
@@ -65,7 +62,6 @@ class ApiClient {
     String url,
     data,
     retry, {
-    // Map<String, dynamic>? headers,
     bool isHeaderRequired = true,
     Map<String, dynamic>? mQueryParameters,
     needToShowLoader = true,
@@ -74,22 +70,12 @@ class ApiClient {
     bool isApplicationJson = true,
     bool isContentTypeUrlEncoded = true,
     bool isContentTypeApplicationJson = false,
-    bool isNeedToCallRefreshToken = true,
-    bool isRefreshToken = false,
   }) async {
     appHelper.showLoader(needToShow: needToShowLoader);
     appHelper.hideKeyboard();
     try {
       if (isHeaderRequired) {
-        if (isRefreshToken) {
-          await appHelper.getRefreshToken().then(
-            (value) => {refToken = value ?? ""},
-          );
-          dio?.options.headers["Authorization"] = "Bearer $refToken";
-        } else {
-          await appHelper.getToken().then((value) => {token = value ?? ""});
-          dio?.options.headers["Authorization"] = "Bearer $token";
-        }
+        dio?.options.headers["Authorization"] = "Bearer $token";
 
         if (isApplicationJson) {
           dio?.options.headers["Accept"] = "application/json";
@@ -110,14 +96,14 @@ class ApiClient {
         data: isContentTypeUrlEncoded
             ? data
             : isContentTypeApplicationJson
-            ? data
-            : formData,
+                ? data
+                : formData,
         options: Options(
           contentType: isContentTypeUrlEncoded
               ? Headers.formUrlEncodedContentType
               : isContentTypeApplicationJson
-              ? Headers.jsonContentType
-              : Headers.multipartFormDataContentType,
+                  ? Headers.jsonContentType
+                  : Headers.multipartFormDataContentType,
         ),
         queryParameters: mQueryParameters,
       );
@@ -134,7 +120,6 @@ class ApiClient {
         retry,
         isHeaderRequired,
         needToShowLogoutMsg: needToShowLogoutMsg,
-        isNeedToCallRefreshToken: isNeedToCallRefreshToken,
       );
     }
   }
@@ -151,13 +136,11 @@ class ApiClient {
     bool isContentTypeUrlEncoded = true,
     bool isContentTypeApplicationJson = false,
     bool isContentTypeMultiPart = false,
-    bool isNeedToCallRefreshToken = true,
   }) async {
     appHelper.showLoader(needToShow: needLoader);
     appHelper.hideKeyboard();
     try {
       if (isHeaderRequired) {
-        await appHelper.getToken().then((value) => {token = value ?? ""});
         dio?.options.headers["Authorization"] = "Bearer $token";
         if (isApplicationJson) {
           dio?.options.headers["Accept"] = "application/json";
@@ -195,7 +178,6 @@ class ApiClient {
         e,
         retry,
         isHeaderRequired,
-        isNeedToCallRefreshToken: isNeedToCallRefreshToken,
       );
     }
   }
@@ -212,7 +194,6 @@ class ApiClient {
     appHelper.hideKeyboard();
     try {
       if (isHeaderRequired) {
-        await appHelper.getToken().then((value) => {token = value ?? ""});
         dio?.options.headers["Authorization"] = "Bearer $token";
         if (isApplicationJson) {
           dio?.options.headers["Accept"] = "application/json";
@@ -238,7 +219,6 @@ class ApiClient {
     retry,
     bool isHeaderRequired, {
     needToShowLogoutMsg,
-    bool isNeedToCallRefreshToken = true,
   }) {
     printCatch(e, retry);
     appHelper.hideLoader();

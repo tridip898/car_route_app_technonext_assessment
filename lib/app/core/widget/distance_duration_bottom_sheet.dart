@@ -9,6 +9,7 @@ import '../constants/app_text_style.dart';
 class DistanceDurationBottomSheet extends StatelessWidget {
   final double? distance;
   final double? duration;
+
   const DistanceDurationBottomSheet({super.key, this.distance, this.duration});
 
   @override
@@ -84,8 +85,8 @@ class DistanceDurationBottomSheet extends StatelessWidget {
               ),
               gapH8,
               Text(
-                "Fastest Route now due to traffic conditions",
-                style: text12Style(),
+                "Fastest route now due to traffic conditions",
+                style: text12Style(color: AppColors.grey),
               ),
               gapH20,
             ],

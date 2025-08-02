@@ -20,95 +20,49 @@ TextStyle textStyle({
   bool isWeight700 = false,
   bool isWeight800 = false,
   bool isRoboto = true,
-  bool isSuzukiProBold = false,
-  bool isSuzukiProHeadline = false,
-  bool isSuzukiProRegular = false,
   bool needShadow = false,
   bool needUnderline = false,
   bool needCross = false,
 }) {
-  if (!isSuzukiProBold && !isSuzukiProHeadline && !isSuzukiProRegular) {
-    return GoogleFonts.roboto(
-      fontSize: fontSize.sp,
-      letterSpacing: letterSpacing,
-      color: isPrimaryColor
-          ? AppColors.primaryColor
-          : isWhiteColor
-              ? AppColors.white
-              : color,
-      fontWeight: isWeight300
-          ? FontWeight.w300
-          : isWeight400
-              ? FontWeight.w400
-              : isWeight500
-                  ? FontWeight.w500
-                  : isWeight600
-                      ? FontWeight.w600
-                      : isWeight700
-                          ? FontWeight.w700
-                          : isWeight800
-                              ? FontWeight.w800
-                              : fontWeight,
-      height: lineHeight,
-      shadows: needShadow
-          ? [
-              const Shadow(
-                color: Colors.grey,
-                offset: Offset(0, 0),
-                blurRadius: 15,
-              ),
-            ]
-          : null,
-      decoration: needUnderline
-          ? TextDecoration.underline
-          : needCross
-              ? TextDecoration.lineThrough
-              : null,
-      decorationColor: underlineColor,
-      decorationStyle: TextDecorationStyle.solid,
-    );
-  } else {
-    return TextStyle(
-      fontSize: fontSize.sp,
-      letterSpacing: letterSpacing,
-      fontFamily: isSuzukiProBold
-          ? "Suzuki Pro Bold"
-          : isSuzukiProRegular
-              ? "Suzuki Pro Regular"
-              : "Suzuki Pro Headline",
-      color: isPrimaryColor
-          ? AppColors.primaryColor
-          : isWhiteColor
-              ? AppColors.white
-              : color,
-      fontWeight: isWeight300
-          ? FontWeight.w300
-          : isWeight400
-              ? FontWeight.w400
-              : isWeight500
-                  ? FontWeight.w500
-                  : isWeight600
-                      ? FontWeight.w600
-                      : isWeight700
-                          ? FontWeight.w700
-                          : isWeight800
-                              ? FontWeight.w800
-                              : fontWeight,
-      height: lineHeight,
-      shadows: needShadow
-          ? [
-              const Shadow(
-                color: Colors.grey,
-                offset: Offset(0, 0),
-                blurRadius: 15,
-              ),
-            ]
-          : null,
-      decoration: needUnderline ? TextDecoration.underline : null,
-      decorationColor: underlineColor,
-      decorationStyle: TextDecorationStyle.solid,
-    );
-  }
+  return GoogleFonts.roboto(
+    fontSize: fontSize.sp,
+    letterSpacing: letterSpacing,
+    color: isPrimaryColor
+        ? AppColors.primaryColor
+        : isWhiteColor
+            ? AppColors.white
+            : color,
+    fontWeight: isWeight300
+        ? FontWeight.w300
+        : isWeight400
+            ? FontWeight.w400
+            : isWeight500
+                ? FontWeight.w500
+                : isWeight600
+                    ? FontWeight.w600
+                    : isWeight700
+                        ? FontWeight.w700
+                        : isWeight800
+                            ? FontWeight.w800
+                            : fontWeight,
+    height: lineHeight,
+    shadows: needShadow
+        ? [
+            const Shadow(
+              color: Colors.grey,
+              offset: Offset(0, 0),
+              blurRadius: 15,
+            ),
+          ]
+        : null,
+    decoration: needUnderline
+        ? TextDecoration.underline
+        : needCross
+            ? TextDecoration.lineThrough
+            : null,
+    decorationColor: underlineColor,
+    decorationStyle: TextDecorationStyle.solid,
+  );
 }
 
 final hintStyle = GoogleFonts.roboto(
@@ -133,9 +87,6 @@ TextStyle text12Style({
   bool isWeight700 = false,
   bool isWeight800 = false,
   bool isRoboto = true,
-  bool isSuzukiProBold = false,
-  bool isSuzukiProHeadline = false,
-  bool isSuzukiProRegular = false,
   bool needShadow = false,
   bool needUnderline = false,
 }) {
@@ -154,9 +105,6 @@ TextStyle text12Style({
     isWeight700: isWeight700,
     isWeight800: isWeight800,
     isRoboto: isRoboto,
-    isSuzukiProBold: isSuzukiProBold,
-    isSuzukiProHeadline: isSuzukiProHeadline,
-    isSuzukiProRegular: isSuzukiProRegular,
     needShadow: needShadow,
     needUnderline: needUnderline,
     underlineColor: underlineColor,
@@ -179,9 +127,6 @@ TextStyle text13Style({
   bool isWeight700 = false,
   bool isWeight800 = false,
   bool isRoboto = true,
-  bool isSuzukiProBold = false,
-  bool isSuzukiProHeadline = false,
-  bool isSuzukiProRegular = false,
   bool needShadow = false,
   bool needUnderline = false,
 }) {
@@ -200,9 +145,6 @@ TextStyle text13Style({
     isWeight700: isWeight700,
     isWeight800: isWeight800,
     isRoboto: isRoboto,
-    isSuzukiProBold: isSuzukiProBold,
-    isSuzukiProHeadline: isSuzukiProHeadline,
-    isSuzukiProRegular: isSuzukiProRegular,
     needShadow: needShadow,
     needUnderline: needUnderline,
     underlineColor: underlineColor,
@@ -225,9 +167,6 @@ TextStyle text14Style({
   bool isWeight700 = false,
   bool isWeight800 = false,
   bool isRoboto = true,
-  bool isSuzukiProBold = false,
-  bool isSuzukiProHeadline = false,
-  bool isSuzukiProRegular = false,
   bool needShadow = false,
   bool needCross = false,
   bool needUnderline = false,
@@ -247,9 +186,6 @@ TextStyle text14Style({
     isWeight700: isWeight700,
     isWeight800: isWeight800,
     isRoboto: isRoboto,
-    isSuzukiProBold: isSuzukiProBold,
-    isSuzukiProHeadline: isSuzukiProHeadline,
-    isSuzukiProRegular: isSuzukiProRegular,
     needShadow: needShadow,
     needCross: needCross,
     needUnderline: needUnderline,
@@ -273,9 +209,6 @@ TextStyle text16Style({
   bool isWeight700 = false,
   bool isWeight800 = false,
   bool isRoboto = true,
-  bool isSuzukiProBold = false,
-  bool isSuzukiProHeadline = false,
-  bool isSuzukiProRegular = false,
   bool needShadow = false,
   bool needCross = false,
   bool needUnderline = false,
@@ -295,9 +228,6 @@ TextStyle text16Style({
     isWeight700: isWeight700,
     isWeight800: isWeight800,
     isRoboto: isRoboto,
-    isSuzukiProBold: isSuzukiProBold,
-    isSuzukiProHeadline: isSuzukiProHeadline,
-    isSuzukiProRegular: isSuzukiProRegular,
     needShadow: needShadow,
     needCross: needCross,
     needUnderline: needUnderline,
@@ -321,9 +251,6 @@ TextStyle text18Style({
   bool isWeight700 = false,
   bool isWeight800 = false,
   bool isRoboto = true,
-  bool isSuzukiProBold = false,
-  bool isSuzukiProHeadline = false,
-  bool isSuzukiProRegular = false,
   bool needShadow = false,
 }) {
   return textStyle(
@@ -341,9 +268,6 @@ TextStyle text18Style({
     isWeight700: isWeight700,
     isWeight800: isWeight800,
     isRoboto: isRoboto,
-    isSuzukiProBold: isSuzukiProBold,
-    isSuzukiProHeadline: isSuzukiProHeadline,
-    isSuzukiProRegular: isSuzukiProRegular,
     needShadow: needShadow,
     underlineColor: underlineColor,
   );
@@ -365,9 +289,6 @@ TextStyle text20Style({
   bool isWeight700 = false,
   bool isWeight800 = false,
   bool isRoboto = true,
-  bool isSuzukiProBold = false,
-  bool isSuzukiProHeadline = false,
-  bool isSuzukiProRegular = false,
   bool needShadow = false,
 }) {
   return textStyle(
@@ -385,9 +306,6 @@ TextStyle text20Style({
     isWeight700: isWeight700,
     isWeight800: isWeight800,
     isRoboto: isRoboto,
-    isSuzukiProBold: isSuzukiProBold,
-    isSuzukiProHeadline: isSuzukiProHeadline,
-    isSuzukiProRegular: isSuzukiProRegular,
     needShadow: needShadow,
     underlineColor: underlineColor,
   );

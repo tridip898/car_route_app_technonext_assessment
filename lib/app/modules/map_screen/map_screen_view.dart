@@ -2,6 +2,7 @@ import 'package:car_route_app_assessment_technonext/app/core/constants/app_asset
 import 'package:car_route_app_assessment_technonext/app/core/constants/app_colors.dart';
 import 'package:car_route_app_assessment_technonext/app/core/constants/app_constraints.dart';
 import 'package:car_route_app_assessment_technonext/app/core/constants/app_text_style.dart';
+import 'package:car_route_app_assessment_technonext/app/core/widget/app_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -14,49 +15,38 @@ class MapScreenView extends GetView<MapScreenController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: controller.scaffoldKey,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColors.primaryColor,
-        title: Text(
-          'Car Route',
-          style: text16Style(isWhiteColor: true),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: controller.clearMap,
-            icon: Icon(
-              Icons.refresh,
-              color: AppColors.white,
-            ),
-          )
-        ],
+      appBar: AppAppbar(
+        refreshClick: controller.clearMap,
       ),
       body: SafeArea(
         child: Obx(() {
           return Stack(
             children: [
+              //This widget will visualize map. Here used sized box for full screen.
               SizedBox(
                 height: Get.height,
                 width: Get.width,
                 child: GoogleMap(
                   initialCameraPosition: controller.initialCameraPosition.value,
-                  myLocationEnabled: true,
+                  myLocationEnabled: controller.locationPermissionGranted.value,
                   myLocationButtonEnabled: true,
                   zoomControlsEnabled: true,
                   onMapCreated: (mapController) {
                     controller.googleMapController = mapController;
+                    logger.i("Map is ready");
                   },
                   markers: controller.markers,
                   polylines: controller.polylines.toSet(),
                   onTap: (position) => controller.handleMapTap(position),
                 ),
               ),
+              //This will show origin and destination address on top of map like dialog
               if (controller.origin.value?.latitude != null &&
-                  controller.destination.value?.latitude != null) ...[
+                  controller.destination.value?.latitude != null &&
+                  controller.originAddress.value.isNotEmpty &&
+                  controller.destinationAddress.value.isNotEmpty) ...[
                 Positioned(
                   top: 20.h,
                   left: 20.w,
@@ -119,11 +109,31 @@ class MapScreenView extends GetView<MapScreenController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                controller.originAddress.value,
-                style: text14Style(isPrimaryColor: true),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      controller.originAddress.value,
+                      style: text14Style(isPrimaryColor: true),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  gapW12,
+                  Material(
+                    shape: CircleBorder(),
+                    clipBehavior: Clip.hardEdge,
+                    color: AppColors.grey.withValues(alpha: .2),
+                    child: InkWell(
+                      onTap: controller.closeTopDialog,
+                      child: Padding(
+                        padding: mainPadding(4, 4),
+                        child: Icon(Icons.close, size: 16.w),
+                      ),
+                    ),
+                  )
+                ],
               ),
               appWidget.divider(height: 16),
               Text(

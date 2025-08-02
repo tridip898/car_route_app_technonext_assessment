@@ -1,93 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_text_style.dart';
 
-
 class AppAppbar extends StatelessWidget implements PreferredSizeWidget {
-  final String title, onActionTitle;
-  final IconData iconTitle;
-  final bool needAction,
-      needLeadingIcon,
-      needIcon,
-      needTitleCentre,
-      needBadge,
-      needBorderIcon,
-      isWhiteStatusBar;
-  final Function()? onActionPressed, backTap, listViewClick, calendarViewClick;
-  final Widget? switchButton;
+  final Function()? refreshClick;
 
   const AppAppbar({
     super.key,
-    required this.title,
-    this.needAction = false,
-    this.needIcon = false,
-    this.needBadge = false,
-    this.needTitleCentre = true,
-    this.needBorderIcon = false,
-    this.isWhiteStatusBar = false,
-    this.iconTitle = Icons.add,
-    this.onActionPressed,
-    this.onActionTitle = "",
-    this.switchButton,
-    this.backTap,
-    this.listViewClick,
-    this.calendarViewClick,
-    this.needLeadingIcon = true,
+    this.refreshClick,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      leadingWidth: 50.w,
-      centerTitle: needTitleCentre,
-      scrolledUnderElevation: 0,
-      leading: needLeadingIcon
-          ? Padding(
-              padding: EdgeInsets.only(left: 8.w),
-              child: Material(
-                color: Colors.transparent,
-                shape: const CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                child: InkWell(
-                  highlightColor: AppColors.white.withValues(alpha: 0.2),
-                  onTap: backTap ??
-                      () {
-                        Get.back();
-                      },
-                  child: Ink(
-                    padding: const EdgeInsets.all(6),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black,
-                      size: 18.w,
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : null,
+      automaticallyImplyLeading: false,
+      backgroundColor: AppColors.primaryColor,
       title: Text(
-        title,
-        style: text16Style(
-            isWeight400: true, isSuzukiProBold: true, letterSpacing: 0),
+        'Car Route',
+        style: text16Style(isWhiteColor: true),
       ),
-      systemOverlayStyle: isWhiteStatusBar
-          ? SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarIconBrightness: Brightness.light,
-              statusBarBrightness: Brightness.dark,
-            )
-          : SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.light,
-            ),
+      centerTitle: true,
+      actions: [
+        IconButton(
+          onPressed: refreshClick,
+          icon: Icon(
+            Icons.refresh,
+            color: AppColors.white,
+          ),
+        )
+      ],
     );
   }
 
