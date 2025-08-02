@@ -1,13 +1,13 @@
-import 'package:car_route_app_assessment_technonext/app/core/constants/app_assets.dart';
-import 'package:car_route_app_assessment_technonext/app/core/constants/app_colors.dart';
-import 'package:car_route_app_assessment_technonext/app/core/constants/app_constraints.dart';
-import 'package:car_route_app_assessment_technonext/app/core/constants/app_text_style.dart';
-import 'package:car_route_app_assessment_technonext/app/core/widget/app_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../core/constants/app_assets.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_constraints.dart';
+import '../../core/constants/app_text_style.dart';
+import '../../core/widget/app_appbar.dart';
 import 'map_screen_controller.dart';
 
 class MapScreenView extends GetView<MapScreenController> {
@@ -43,9 +43,7 @@ class MapScreenView extends GetView<MapScreenController> {
                 ),
               ),
               //This will show origin and destination address on top of map like dialog
-              if (controller.origin.value?.latitude != null &&
-                  controller.destination.value?.latitude != null &&
-                  controller.originAddress.value.isNotEmpty &&
+              if (controller.originAddress.value.isNotEmpty &&
                   controller.destinationAddress.value.isNotEmpty) ...[
                 Positioned(
                   top: 20.h,

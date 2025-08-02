@@ -209,6 +209,8 @@ class MapScreenController extends GetxController {
     showBottomSheet.value = false;
     routeDistance.value = 0.0;
     routeDuration.value = 0.0;
+    originAddress.value = "";
+    destinationAddress.value = "";
   }
 
   void closeTopDialog() {
