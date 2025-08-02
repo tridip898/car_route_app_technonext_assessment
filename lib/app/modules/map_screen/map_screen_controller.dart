@@ -99,6 +99,7 @@ class MapScreenController extends GetxController {
         (origin.value != null && destination.value != null)) {
       origin.value = position;
       destination.value = null;
+      destinationAddress.value = "";
       polylines.clear();
       sheetController?.close();
       addMarker(position, originText);
