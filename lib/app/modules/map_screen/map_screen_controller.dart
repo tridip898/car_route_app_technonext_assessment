@@ -73,6 +73,11 @@ class MapScreenController extends GetxController {
   void listenBottomSheet() {
     ever(showBottomSheet, (show) {
       if (show == true) {
+        //amra jodi scaffold's build method er baire theke bottom sheet call krte cai (Ex. controller) tkhn saffoldstate er maddome krte pari.
+        //amra persistent bottom sheet er jnno showBottomSheet use kri
+        //showBottomSheet is actually a method of the ScaffoldState class
+        //showBottomSheet() displays a persistent bottom sheet.
+        // PersistentBottomSheetController is used here to store a reference to the bottom sheet after it’s opened,
         sheetController = scaffoldKey.currentState?.showBottomSheet(
           (context) => DistanceDurationBottomSheet(
             distance: routeDistance.value,
@@ -181,13 +186,18 @@ class MapScreenController extends GetxController {
 
   void moveCameraToFitMarkers() {
     /// Moves the camera to fit both origin and destination markers within the visible map area.
+    /// This method ensures your map zooms and moves so the full area covering both origin and destination markers is visible with some space around them, improving user experience when viewing routes or points of interest.
     if (origin.value == null || destination.value == null) return;
 
+    //Calculates the southwest corner of the bounding box by taking the minimum latitude and longitude between origin and destination.
+    //Southwest is the bottom-left corner of the area that contains both points.
     final southwest = LatLng(
       min(origin.value!.latitude, destination.value!.latitude),
       min(origin.value!.longitude, destination.value!.longitude),
     );
 
+    //Calculates the northeast corner by taking the maximum latitude and longitude.
+    //Northeast is the top-right corner of the bounding box.
     final northeast = LatLng(
       max(origin.value!.latitude, destination.value!.latitude),
       max(origin.value!.longitude, destination.value!.longitude),

@@ -16,7 +16,7 @@ class RoutingService {
         double durationMin
       })?> getRoute(LatLng origin, LatLng destination) async {
     try {
-      // Make a request to get the route between origin and destination
+      // Make a request to routes API to get the route between origin and destination
       final result = await polylinePoints.getRouteBetweenCoordinatesV2(
         request: poly_line.RoutesApiRequest(
           origin: poly_line.PointLatLng(origin.latitude, origin.longitude),
@@ -37,6 +37,7 @@ class RoutingService {
 
       final route = result.routes.first;
       // Convert polyline points from response into a list of LatLng
+      //polylinePoints means decoded polylines point for the entire route
       final points = route.polylinePoints
               ?.map((p) => LatLng(p.latitude, p.longitude))
               .toList() ??
