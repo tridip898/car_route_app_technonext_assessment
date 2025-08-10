@@ -71,6 +71,7 @@ class MapScreenController extends GetxController {
   }
 
   void listenBottomSheet() {
+    //amra worker use krci akhane. worker use krle kono reactive variable k listen krbo. Jkhn value change hbe amra action trigger krbo. akhane jkhn showBottomSheet tru hbe amra bottom sheet dkhabo
     ever(showBottomSheet, (show) {
       if (show == true) {
         //amra jodi scaffold's build method er baire theke bottom sheet call krte cai (Ex. controller) tkhn saffoldstate er maddome krte pari.
@@ -156,7 +157,8 @@ class MapScreenController extends GetxController {
         polylineId: const PolylineId('route'),
         color: AppColors.primaryColor.withValues(alpha: .8),
         width: 4,
-        points: result.polylinePoints,
+        points: result
+            .polylinePoints, //The list of coordinates/latlong from the API.
       );
 
       if (polyline.points.isEmpty) {

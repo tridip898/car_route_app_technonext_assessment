@@ -36,7 +36,7 @@ class RoutingService {
       }
 
       final route = result.routes.first;
-      // Convert polyline points from response into a list of LatLng
+      // Decode polyline points from response into a list of LatLng
       //polylinePoints means decoded polylines point for the entire route
       final points = route.polylinePoints
               ?.map((p) => LatLng(p.latitude, p.longitude))
